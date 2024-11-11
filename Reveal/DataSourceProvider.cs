@@ -58,7 +58,7 @@ namespace RevealSdk.Server.Reveal
                     // Example of how to use a parameter
                     // Check the format of the customerId to make sure it is valid
                     // You can perform other checks here or in the UserContextProvider to ensure
-                    // that your parameters are valid, or that the expect user is making the request
+                    // that your parameters are valid, or that the expect user is making the request                    
                     // *****
                     if (!IsValidCustomerId(customerId))
                         throw new ArgumentException("Invalid CustomerID format. CustomerID must be a 5-character alphanumeric string.");
