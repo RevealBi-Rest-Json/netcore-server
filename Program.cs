@@ -24,6 +24,7 @@ builder.Services.AddControllers().AddReveal(builder =>
         // ***
         // optional 
         .AddUserContextProvider<UserContextProvider>();
+        //.AddDashboardProvider<DashboardProvider>();
 });
 
 builder.Services.AddEndpointsApiExplorer();

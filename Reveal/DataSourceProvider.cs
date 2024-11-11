@@ -31,7 +31,7 @@ namespace RevealSdk.Server.Reveal
             // ****
             if (dataSourceItem is RVJsonDataSourceItem jsonDsi && jsonDsi.ResourceItem is RVRESTDataSourceItem restDsi)
             {
-                ChangeDataSourceAsync(userContext, restDsi.DataSource);
+                ChangeDataSourceAsync(userContext, restDsi.DataSource);                
             }
             else
             {
