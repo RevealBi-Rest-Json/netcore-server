@@ -29,13 +29,12 @@ namespace RevealSdk.Server.Reveal
             // passed in from the client.  In this case, the user id is passed in and the data source is changed
             // based on the UserContext.userid used in the DataSource.
             // ****
-            if (dataSourceItem is RVJsonDataSourceItem jsonDsi && jsonDsi.ResourceItem is RVRESTDataSourceItem restDsi)
+
+            ChangeDataSourceAsync(userContext, dataSourceItem.DataSource);
+
+            if (dataSourceItem is RVResourceBasedDataSourceItem resItem)
             {
-                ChangeDataSourceAsync(userContext, restDsi.DataSource);                
-            }
-            else
-            {
-                ChangeDataSourceAsync(userContext, dataSourceItem.DataSource);
+                ChangeDataSourceItemAsync(userContext, dashboardId, (RVDataSourceItem)resItem.ResourceItem);
             }
 
             return Task.FromResult(dataSourceItem);
@@ -56,8 +55,9 @@ namespace RevealSdk.Server.Reveal
                     // *****
                     // Example of how to use a parameter
                     // *****
-                    restDs.Url = "https://northwindcloud.azurewebsites.net/api/invoices/customer/" + userContext.UserId;
+                    restDs.Url = $"https://northwindcloud.azurewebsites.net/api/invoices/customer/{userContext.UserId}";
                     restDs.UseAnonymousAuthentication = true;
+
                 }
 
                 if (restDs.Id == "SalesByCategory")
@@ -79,7 +79,7 @@ namespace RevealSdk.Server.Reveal
                 }
             }
 
-            return Task.FromResult(dataSource);
+            return  Task.FromResult(dataSource);
         }
     }
 }
