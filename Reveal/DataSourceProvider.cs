@@ -2,6 +2,7 @@
 using Reveal.Sdk.Data;
 using Reveal.Sdk.Data.Json;
 using Reveal.Sdk.Data.Rest;
+using System.Text.RegularExpressions;
 namespace RevealSdk.Server.Reveal
 
 {
@@ -46,6 +47,7 @@ namespace RevealSdk.Server.Reveal
             // Check the request for the incoming ID of the data source from the client request
             // you can also check the incoming dataSource type or user context to set parameters
             // *****
+            string customerId = userContext.UserId;
 
             if (dataSource is RVRESTDataSource restDs)
             {
@@ -54,8 +56,14 @@ namespace RevealSdk.Server.Reveal
                 {
                     // *****
                     // Example of how to use a parameter
+                    // Check the format of the customerId to make sure it is valid
+                    // You can perform other checks here or in the UserContextProvider to ensure
+                    // that your parameters are valid, or that the expect user is making the request
                     // *****
-                    restDs.Url = $"https://northwindcloud.azurewebsites.net/api/invoices/customer/{userContext.UserId}";
+                    if (!IsValidCustomerId(customerId))
+                        throw new ArgumentException("Invalid CustomerID format. CustomerID must be a 5-character alphanumeric string.");
+
+                    restDs.Url = $"https://northwindcloud.azurewebsites.net/api/invoices/customer/{customerId}";
                     restDs.UseAnonymousAuthentication = true;
 
                 }
@@ -73,13 +81,21 @@ namespace RevealSdk.Server.Reveal
                 {
                     // *****
                     // Example of how to use a parameter
+                    // Check the format of the customerId to make sure it is valid
+                    // You can perform other checks here or in the UserContextProvider to ensure
+                    // that your parameters are valid, or that the expect user is making the request
                     // *****
-                    restDs.Url = "https://northwindcloud.azurewebsites.net/api/customers_orders_min/" + userContext.UserId;
+                    if (!IsValidCustomerId(customerId))
+                        throw new ArgumentException("Invalid CustomerID format. CustomerID must be a 5-character alphanumeric string.");
+
+                    restDs.Url = $"https://northwindcloud.azurewebsites.net/api/customers_orders_min/{customerId}";
                     restDs.UseAnonymousAuthentication = true;
                 }
             }
 
             return  Task.FromResult(dataSource);
         }
+
+        private static bool IsValidCustomerId(string customerId) => Regex.IsMatch(customerId, @"^[A-Za-z0-9]{5}$");
     }
 }
