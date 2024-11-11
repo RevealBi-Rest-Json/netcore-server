@@ -86,7 +86,7 @@ namespace RevealSdk.Server.Reveal
                     // that your parameters are valid, or that the expect user is making the request
                     // *****
                     if (!IsValidCustomerId(customerId))
-                        throw new ArgumentException("Invalid CustomerID format. CustomerID must be a 5-character alphanumeric string.");
+                        throw new ArgumentException("Invalid Customer. CustomerID must be a 5-character alphanumeric string and must be in the database.");
 
                     restDs.Url = $"https://northwindcloud.azurewebsites.net/api/customers_orders_min/{customerId}";
                     restDs.UseAnonymousAuthentication = true;
@@ -96,6 +96,24 @@ namespace RevealSdk.Server.Reveal
             return  Task.FromResult(dataSource);
         }
 
-        private static bool IsValidCustomerId(string customerId) => Regex.IsMatch(customerId, @"^[A-Za-z0-9]{5}$");
+        private static bool IsValidCustomerId(string customerId)
+        {
+            // Check the format of the customerId
+            if (!Regex.IsMatch(customerId, @"^[A-Za-z0-9]{5}$"))
+                return false;
+
+            // Perform the secondary check using the new API
+            return IsCustomerIdValidWithApi(customerId);
+        }
+
+        private static bool IsCustomerIdValidWithApi(string customerId)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = client.GetAsync($"https://northwindcloud.azurewebsites.net/api/validate/customer/{customerId}").Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
+
     }
 }
