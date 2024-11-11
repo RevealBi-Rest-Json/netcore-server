@@ -17,8 +17,12 @@ builder.Services.AddControllers().AddReveal(builder =>
         //    settings.License = "eyJhbGciOicCI6IkpXVCJ9.e";
         //})
 
+        // ***
+        // required 
         .AddAuthenticationProvider<AuthenticationProvider>()
         .AddDataSourceProvider<DataSourceProvider>()
+        // ***
+        // optional 
         .AddUserContextProvider<UserContextProvider>();
 });
 
@@ -109,8 +113,3 @@ app.UseAuthorization();
 app.MapControllers();
 app.Run();
 
-public class DashboardNames
-{
-    public string? DashboardFileName { get; set; }
-    public string? DashboardTitle { get; set; }
-}

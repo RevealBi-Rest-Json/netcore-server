@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "netcore-server", "netcore-server.csproj", "{3B7EA9C4-D657-4F92-919C-4BBB2CFFC80C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rest-netcore-server", "rest-netcore-server.csproj", "{3B7EA9C4-D657-4F92-919C-4BBB2CFFC80C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
